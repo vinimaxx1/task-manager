@@ -1,12 +1,58 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from database import get_connection
 
 app = Flask(__name__)
 
-# Página inicial
+#pagina inicial
 @app.route('/')
 def homepage():
-    return jsonify({'message': 'Bem-vindo ao Gerenciador de Tarefas!'})
+    return render_template('index.html')  # Renderiza o arquivo HTML
+
+# Endpoint: Registrar usuário
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    nome_usuario = data['nome_usuario']
+    email = data['email']
+    senha = data['senha']
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO usuarios (nome_usuario, email, senha)
+        VALUES (%s, %s, %s)
+    """, (nome_usuario, email, senha))
+
+    connection.commit()
+    cursor.close()
+    connection.close()
+
+    return jsonify({'message': 'Usuário registrado com sucesso!'})
+
+# Endpoint: Login de usuário
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    nome_usuario = data['nome_usuario']
+    senha = data['senha']
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM usuarios
+        WHERE nome_usuario = %s AND senha = %s
+    """, (nome_usuario, senha))
+    
+    usuario = cursor.fetchone()
+    cursor.close()
+    connection.close()
+
+    if usuario:
+        return jsonify({'message': 'Login bem-sucedido!'})
+    else:
+        return jsonify({'message': 'Credenciais inválidas!'}), 401
 
 # Endpoint: Listar todas as tarefas
 @app.route('/tarefas', methods=['GET'])
