@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
-from database import get_connection, create_tables
+from database import get_connection
 
 app = Flask(__name__)
 
-# Criar as tabelas no início
-create_tables()
+# Página inicial
+@app.route('/')
+def homepage():
+    return jsonify({'message': 'Bem-vindo ao Gerenciador de Tarefas!'})
 
 # Endpoint: Listar todas as tarefas
 @app.route('/tarefas', methods=['GET'])
