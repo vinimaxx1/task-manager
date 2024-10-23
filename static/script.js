@@ -7,20 +7,25 @@ const formTitle = document.getElementById('form-title');
 const formSubmit = document.getElementById('formSubmit');
 const toggleFormText = document.getElementById('toggleText');
 const toggleForm = document.getElementById('toggleForm');
+const selectedRole = document.getElementById('selectedRole'); 
 let isLogin = true;  // Variável de controle para alternar entre login e registro
 
 // URL base do backend Flask
-const apiBaseUrl = 'http://localhost:5000';  // Substitua pela URL correta do seu backend
+const apiBaseUrl = 'http://127.0.0.1:5000';  
 
 // Escolher função
 professorBtn.addEventListener('click', () => {
     roleInput.value = 'Professor';
     formContainer.classList.remove('hidden');
+    selectedRole.textContent = 'Função selecionada: PROFESSOR';  // Exibe "PROFESSOR"
+    selectedRole.classList.remove('hidden');  // Torna o texto visível
 });
 
 alunoBtn.addEventListener('click', () => {
     roleInput.value = 'Aluno';
     formContainer.classList.remove('hidden');
+    selectedRole.textContent = 'Função selecionada: ALUNO';  // Exibe "ALUNO"
+    selectedRole.classList.remove('hidden');  // Torna o texto visível
 });
 
 // Alternar entre login e registro
@@ -53,7 +58,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
 
 // Função para fazer login
 function loginUser(data) {
-    fetch(`${apiBaseUrl}/login`, {  // Alterar para o endpoint correto de login no backend
+    fetch(`${apiBaseUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -77,7 +82,7 @@ function loginUser(data) {
 
 // Função para registrar usuário
 function registerUser(data) {
-    fetch(`${apiBaseUrl}/register`, {  // Alterar para o endpoint correto de registro no backend
+    fetch(`${apiBaseUrl}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

@@ -65,3 +65,10 @@ form input {
 #toggleForm span {
     text-decoration: underline;
 }
+
+#selectedRole {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #5F317C; /* Cor correspondente ao tema */
+}
